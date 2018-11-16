@@ -1,0 +1,5 @@
+2 objectives:
+	Have the robot search for a cube and pick it up
+	Communicate a pause/continue command to the robot
+
+Due 11/17 at 2 pm
