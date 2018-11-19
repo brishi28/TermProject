@@ -7,8 +7,6 @@ Term project for 15-112:
 
 To install the cozmo SDK use: http://cozmosdk.anki.com/docs/initial.html  
 
-For remote controll and Flask interfacing with Python3 installed run:  
+For remote control and Flask interfacing with Python3 installed run:  
 
 pip3 install flask  
-pip3 install Pillow  
-pip3 install requests  
