@@ -30,6 +30,9 @@ def stop(robot: cozmo.robot.Robot):
 
 def goToObject(robot: cozmo.robot.Robot):
 
+    robot.world.request_nav_memory_map(1.0)
+    print(robot.world.nav_memory_map)
+
     while not paused:
         robot.move_lift(-3)
         robot.set_head_angle(degrees(0)).wait_for_completed()
@@ -46,8 +49,6 @@ def goToObject(robot: cozmo.robot.Robot):
             lookAround.stop()
 
         if cube:
-            action = robot.go_to_object(cube, distance_mm(70.0))
-            action.wait_for_completed()
             action = robot.pickup_object(cube, num_retries=3)
             action.wait_for_completed()
             if action.has_failed:
