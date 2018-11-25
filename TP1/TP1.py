@@ -10,7 +10,9 @@ from cozmo.util import degrees, distance_mm, speed_mmps, Angle
 paused = False
 coz = None
 
-
+'''
+Records the information about the robot
+'''
 class cozmoRobot(object):
     def __init__(self, robot = cozmo.robot.Robot):
         self.directionList = {'N': [0, 1], 'S': [0, -1], 'W': [1, 0]}
@@ -26,11 +28,16 @@ class cozmoRobot(object):
     def getCurrentMap(self):
         return self.currentMap
 
+    '''
+    Move 30 millimeters and record information about the coordinate that the Cozmo is on
+        within the map
+    '''
     def moveASpace(self):
         current_action = self.robot.drive_straight(distance_mm(30.0), speed_mmps(15.0))
         current_action.wait_for_completed()
         self.currentX += self.directionList[self.currentDirection][0]
         self.currentY += self.directionList[self.currentDirection][1]
+        #Cliff detected
         if current_action.has_failed:
             code, reason = current_action.failure_reason
             result = current_action.result
@@ -46,15 +53,22 @@ class cozmoRobot(object):
             self.mapSpace("safe")
             return True
 
-
+    '''
+    Record map information
+    '''
     def mapSpace(self, type):
         self.currentMap += [gridNode(self.currentX, self.currentY, type)]
         print(self.currentMap)
 
+    '''
+    Inlude a visited list to exit out of the mapping loop
+    '''
     def addToVisited(self):
         self.visited.add((self.currentX, self.currentY))
 
-
+    '''
+    Rotate to a specific direction
+    '''
     def changeDirection(self, newDirection):
         print(newDirection)
         direction = ['N', 'W', 'S', 'E']
@@ -79,6 +93,9 @@ class gridNode(object):
 
 app = Flask(__name__)
 
+'''
+Call a function based on a post request ending with a given url
+'''
 @app.route('/state',methods = ['POST', 'GET'])
 def buttonsWebpage():
     global paused
@@ -117,6 +134,9 @@ def beginMapping(robot: cozmo.robot.Robot):
         else:
             coz.addToVisited()
 
+'''
+Find and pick up a block
+'''
 def grabBlock(robot: cozmo.robot.Robot):
     if not paused:
         lookaround = robot.start_behavior(cozmo.behavior.BehaviorTypes.LookAroundInPlace)

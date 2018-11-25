@@ -2,7 +2,9 @@ import webbrowser, os
 from time import sleep
 from threading import Thread
 
-
+'''
+Opens file and starts a thread
+'''
 def openBrowser():
     path = 'file://' + os.path.realpath("buttonsWebpage.html")
 
